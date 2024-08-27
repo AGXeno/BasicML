@@ -1,4 +1,4 @@
-# BasicML Program (Group Project for UVU 2450)
+# BasicML Program (Group Project)
 
 ## Summary:
 The BasicML program is a simple software that introduces computer architecture and the underlying functions to interested computer science students, professors and hobbyists alike. The program allows you to send inputs and watch how they move around in memory to achieve a desired output. The memory will open up with 100 addresses minimum to prevent overloading.
