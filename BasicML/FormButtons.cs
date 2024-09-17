@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,23 +7,34 @@ using System.Threading.Tasks;
 namespace BasicML
 {
 	// This file contains the functions that are used to control the buttons in the form
-	public partial class FormBasicML : Form
+	public partial class FormTab : UserControl
 	{
 		/* - - - - - - - - - - Display Functions - - - - - - - - - - */
 
 		// Updates the visibility of the buttons
 		private void Buttons_Refresh()
 		{
-			if (InstanceHandler.GetCpu(0).memory.Count > 0)
+			if (index == 0)
+			{
+				removeTabButton.Visible = false;
+				removeTabButton.Enabled = false;
+			}
+			else
+			{
+				removeTabButton.Visible = true;
+				removeTabButton.Enabled = true;
+			}
+
+			if (cpu.memory.Count > 0)
 			{
 				runButton.Visible = true;
 				stepButton.Visible = true;
                 saveAsButton.Visible = true;
 
-                if (InstanceHandler.GetCpu(0).MemoryAddress != 0) { runFromStartButton.Visible = true; }
+                if (cpu.MemoryAddress != 0) { runFromStartButton.Visible = true; }
 				else { runFromStartButton.Visible = false; }
 
-				if ((InstanceHandler.GetCpu(0).MemoryAddress != 0) || (InstanceHandler.GetCpu(0).Accumulator != 0)) { resetButton.Visible = true; }
+				if ((cpu.MemoryAddress != 0) || (cpu.Accumulator != 0)) { resetButton.Visible = true; }
 				else { resetButton.Visible = false; }
 			}
 			else
@@ -48,15 +59,30 @@ namespace BasicML
 		{
 			ChooseFile();
 			LoadFile();
-			RefreshMemory();
+			RefreshTab();
+		}
+
+        private void chooseFile6Button_Click(object sender, EventArgs e)
+        {
+            ChooseFile();
+            LoadFile6();
+			RefreshTab();
 		}
 
 
-		// Runs when the "Reload File" button is clicked
-		private void LoadFileButton_Click(object sender, EventArgs e)
+        // Runs when the "Reload File" button is clicked
+        private void LoadFileButton_Click(object sender, EventArgs e)
 		{
-			LoadFile();
-			RefreshMemory();
+			if (cpu.UsingWord6)
+			{
+                LoadFile6();
+				MemoryGrid_Refresh();
+            }
+			else
+			{
+                LoadFile();
+				MemoryGrid_Refresh();
+            }
 		}
 
         private void SaveAsButton_Click(object sender, EventArgs e)
@@ -68,34 +94,46 @@ namespace BasicML
         // Runs when the "Run" button is clicked
         private void RunButton_Click(object sender, EventArgs e)
 		{
-			InstanceHandler.GetCpu(0).StartExecution();
-			RefreshMemory();
+			cpu.StartExecution();
+			RefreshTab();
 		}
 
 
 		// Runs when the "Step" button is clicked
 		private void StepButton_Click(object sender, EventArgs e)
 		{
-			InstanceHandler.GetCpu(0).StepExecution();
-			RefreshMemory();
+			cpu.StepExecution();
+			RefreshTab();
 		}
 
 
 		// Runs when the "Run From Start" button is clicked
 		private void RunFromStartButton_Click(object sender, EventArgs e)
 		{
-			InstanceHandler.GetCpu(0).MemoryAddress = 0;
-			InstanceHandler.GetCpu(0).StartExecution();
+			cpu.MemoryAddress = 0;
+			cpu.StartExecution();
 		}
 
 
 		// Runs when the "Reset" button is clicked
 		private void ResetButton_Click(object sender, EventArgs e)
 		{
-			InstanceHandler.GetCpu(0).MemoryAddress = 0;
-			InstanceHandler.GetCpu(0).Accumulator.Clear();
+			cpu.MemoryAddress = 0;
+			cpu.Accumulator.Clear();
 			programOutputBox.Clear();
-			RefreshMemory();
+			RefreshTab();
+		}
+
+		private void AddTab_Click(object sender, EventArgs e)
+		{
+			FormBasicML.AddInstance();
+			FormBasicML.RefreshTabContent();
+		}
+
+		private void RemoveTab_Click(object sender, EventArgs e)
+		{
+			FormBasicML.RemoveInstanceAt(index);
+			FormBasicML.RefreshTabContent();
 		}
 
 

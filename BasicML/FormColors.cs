@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace BasicML
 {
-	public partial class FormBasicML : Form
+	public partial class FormTab : UserControl
 	{
 		/* - - - - - - - - - - Variables! - - - - - - - - - - */
 
@@ -37,7 +38,12 @@ namespace BasicML
 		private void SetButtonColor(Color color)
 		{
 			chooseFileButton.BackColor = color;
+			chooseFile6Button.BackColor = color;
 			reloadFileButton.BackColor = color;
+
+			saveAsButton.BackColor = color;
+			addTabButton.BackColor = color;
+			removeTabButton.BackColor = color;
 
 			runButton.BackColor = color;
 			runFromStartButton.BackColor = color;
